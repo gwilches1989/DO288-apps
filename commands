@@ -1,0 +1,313 @@
+[student@workstation DO288-apps]$ history
+    1  exit
+    2  lab cat /usr/lhistory
+    3  history
+    4  cat /usr/share/bash-completion/completions/lab 
+    5  cat ~/.bashrc 
+    6  helm version
+    7  vi ~/.bashrc
+    8  ssh lab@utility
+    9  exit
+   10  lab --refresh
+   11  exit
+   12  exit
+   13  exit
+   14  exit
+   15  lab-configure
+   16  vi token
+   17   git clone https://github.com/gwilches1989/DO288-apps
+   18  git clone https://github.com/gwilches1989/DO288-apps
+   19  cat token 
+   20  git clone https://github.com/gwilches1989/DO288-apps
+   21  ls -ltrh
+   22   cd DO288-apps
+   23  git status
+   24  head README.md
+   25  cd ~
+   26  ls ~/DO288/labs/external-registry/ubi-sleep
+   27  ls ~/DO288/labs/external-registry/
+   28  ls ~/DO288-apps/labs/external-registry/ubi-sleep
+   29  ls -ltrh
+   30  lab external-registry start
+   31  ls ~/DO288-apps/labs/external-registry/ubi-sleep
+   32  ls -ltrh
+   33  cd DO288/labs/external-registry/ubi-sleep/blobs/sha256/
+   34  ls
+   35  ls ~/DO288/labs/external-registry/ubi-sleep
+   36  source /usr/local/etc/ocp4.config
+   37  podman login -u ${RHT_OCP4_QUAY_USER} quay.io
+   38  skopeo copy --format v2s1 oci:/home/student/DO288/labs/external-registry/ubi-sleep docker://quay.io/${RHT_OCP4_QUAY_USER}/ubi-sleep:1.0
+   39  skopeo inspect 
+   40  docker://quay.io/${RHT_OCP4_QUAY_USER}/ubi-sleep:1.0
+   41  skopeo inspect docker://quay.io/${RHT_OCP4_QUAY_USER}/ubi-sleep:1.0
+   42  podman run -d --name sleep quay.io/${RHT_OCP4_QUAY_USER}/ubi-sleep:1.0
+   43  podman ps
+   44  podman logs sleep
+   45  podman stop sleep
+   46  podman rm sleep
+   47  oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+   48  oc new-project ${RHT_OCP4_DEV_USER}-external-registry
+   49  oc new-app --name sleep --image quay.io/${RHT_OCP4_QUAY_USER}/ubi-sleep:1.0
+   50   oc create secret generic quayio --from-file .dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type kubernetes.io/dockerconfigjson
+   51  oc secrets link default quayio --for pull
+   52  oc new-app --name sleep --image quay.io/${RHT_OCP4_QUAY_USER}/ubi-sleep:1.0
+   53  oc get pod
+   54  oc logs sleep-88d997b99-r4kl4
+   55  oc delete project ${RHT_OCP4_DEV_USER}-external-registry
+   56  skopeo delete docker://quay.io/${RHT_OCP4_QUAY_USER}/ubi-sleep:1.0
+   57  lab external-registry finish
+   58  oc get route -n openshift-image-registry
+   59  oc whoami
+   60  TOKEN=$(oc whoami -t)
+   61  env|grep TOK
+   62  lab expose-registry start
+   63  source /usr/local/etc/ocp4.config
+   64  INTERNAL_REGISTRY=default-route-openshift-image-registry.apps.ocp4.example.com
+   65  podman login -u ${RHT_OCP4_DEV_USER} -p $(oc whoami -t) $INTERNAL_REGISTRY
+   66  podman login -u ${RHT_OCP4_DEV_USER} -p $(oc whoami -t) $INTERNAL_REGISTRY
+   67  source /usr/local/etc/ocp4.config
+   68  INTERNAL_REGISTRY=default-route-openshift-image-registry.apps.ocp4.example.com
+   69  podman login -u ${RHT_OCP4_DEV_USER} -p $(oc whoami -t) $INTERNAL_REGISTRY
+   70  oc get is
+   71  lab configure
+   72  oc patch config.imageregistry cluster -n openshift-image-registry --type merge -p '{"spec":{"defaultRoute":true}}'
+   73  ls ~/DO288-apps/labs/external-registry/ubi-sleep
+   74  ls ~/DO288-apps/labs/external-registry/
+   75  ~/DO288/labs/probes/kill.sh
+   76  oc get pod
+   77  ~/DO288/labs/probes/not-ready.sh
+   78  oc get pod
+   79  curl -is probes-${RHT_OCP4_DEV_USER}-probes.${RHT_OCP4_WILDCARD_DOMAIN} | grep 'HTTP/1.0'
+   80  oc get pod
+   81  curl -is probes-${RHT_OCP4_DEV_USER}-probes.${RHT_OCP4_WILDCARD_DOMAIN} | grep 'HTTP/1.0'
+   82  source /usr/local/etc/ocp4.config
+   83  curl -is probes-${RHT_OCP4_DEV_USER}-probes.${RHT_OCP4_WILDCARD_DOMAIN} | grep 'HTTP/1.0'
+   84  oc get pod
+   85  oc delete project ${RHT_OCP4_DEV_USER}-probes
+   86  lab probes finish
+   87  lab strategy start
+   88  source /usr/local/etc/ocp4.config
+   89  oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+   90  oc new-project ${RHT_OCP4_DEV_USER}-strategy
+   91  oc new-app --as-deployment-config --name mysql -e MYSQL_USER=test -e MYSQL_PASSWORD=redhat -e MYSQL_DATABASE=test
+   92  db -e MYSQL_AIO=0 --image registry.redhat.io/rhel8/mysql-80
+   93  oc new-app --as-deployment-config --name mysql -e MYSQL_USER=test -e MYSQL_PASSWORD=redhat -e MYSQL_DATABASE=testdb -e MYSQL_AIO=0 --image registry.redhat.io/rhel8/mysql-80
+   94  oc get pods
+   95  oc describe dc/mysql | grep -i strategy:
+   96  oc set triggers dc/mysql --from-config --remove
+   97  oc patch dc/mysql --patch '{"spec":{"strategy":{"type":"Recreate"}}}'
+   98  oc patch dc/mysql --type=json -p='[{"op":"remove", "path": "/spec/strategy/rollingParams"}]'
+   99  oc get pod
+  100  ~/DO288/labs/strategy/post-hook.sh
+  101  oc get pod
+  102  oc describe dc/mysql
+  103  oc describe dc/mysql | grep -iA 3 'strategy:'
+  104  oc rollout latest dc/mysql
+  105  oc get pod
+  106  oc logs mysql-2-hook-post
+  107  oc get pod
+  108  oc set env dc/mysql HOOK_RETRIES=5
+  109  oc rollout latest dc/mysql
+  110  oc get pod
+  111  oc get pod -w
+  112  oc get pods
+  113  oc rsh mysql-3-2s8wc
+  114  oc delete project ${RHT_OCP4_DEV_USER}-strategy
+  115  lab strategy finish
+  116  lab expose-registry start
+  117  source /usr/local/etc/ocp4.config
+  118   oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+  119  podman login -u ${RHT_OCP4_DEV_USER} -p $(oc whoami -t) $INTERNAL_REGISTRY
+  120  INTERNAL_REGISTRY=default-route-openshift-image-registry.apps.ocp4.example.com
+  121  oc new-project ${RHT_OCP4_DEV_USER}-common
+  122  TOKEN=$(oc whoami -t)
+  123  ls ~/DO288/labs/expose-registry/ubi-info
+  124  skopeo copy --format v2s1 --dest-creds=${RHT_OCP4_DEV_USER}:${TOKEN} oci:/home/student/DO288/labs/expose-registry/ubi-info docker://${INTERNAL_REGISTRY}/${RHT_OCP4_DEV_USER}-common/ubi-info:1.0
+  125  oc get is
+  126  podman pull ${INTERNAL_REGISTRY}/${RHT_OCP4_DEV_USER}-common/ubi-info:1.0
+  127  podman login -u ${RHT_OCP4_DEV_USER} -p $(oc whoami -t) $INTERNAL_REGISTRY
+  128  podman pull ${INTERNAL_REGISTRY}/${RHT_OCP4_DEV_USER}-common/ubi-info:1.0
+  129  podman run --name info ${INTERNAL_REGISTRY}/${RHT_OCP4_DEV_USER}-common/ubi-info:1.0
+  130  podman ps
+  131  podman ps -a
+  132  oc delete is ubi-info
+  133  oc delete project ${RHT_OCP4_DEV_USER}-common
+  134  podman rm info
+  135   podman rmi -f ${INTERNAL_REGISTRY}/${RHT_OCP4_DEV_USER}-common/ubi-info:1.0
+  136  lab expose-registry finish
+  137  lab image-stream start
+  138  source /usr/local/etc/ocp4.config
+  139   oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+  140  oc new-project ${RHT_OCP4_DEV_USER}-common
+  141  skopeo inspect docker://quay.io/redhattraining/hello-world-nginx
+  142  oc import-image hello-world --confirm --from quay.io/redhattraining/hello-world-nginx
+  143  oc get istag
+  144  oc describe is hello-world
+  145  oc new-project ${RHT_OCP4_DEV_USER}-image-stream
+  146  oc new-app --name hello -i ${RHT_OCP4_DEV_USER}-common/hello-world
+  147  oc get pod
+  148  oc expose svc hello
+  149  oc get route
+  150  curl http://hello-${RHT_OCP4_DEV_USER}-image-stream.${RHT_OCP4_WILDCARD_DOMAIN}
+  151  oc delete project ${RHT_OCP4_DEV_USER}-image-stream
+  152  oc delete project ${RHT_OCP4_DEV_USER}-common
+  153  lab image-stream finish
+  154  lab multicontainer-helm start
+  155  cd ~/DO288/labs/multicontainer-helm
+  156  helm create famouschart
+  157  cd famouschart
+  158  tree .
+  159  vi values.yaml 
+  160  pwd
+  161  cd ..
+  162  ls -ltrh
+  163  cd ..
+  164  ls -ltrh
+  165  cd multicontainer-helm/
+  166  cd famouschart/
+  167  ls
+  168  cd templates/
+  169  ls
+  170  vi deployment.yaml 
+  171  cd ..
+  172  vi Chart.yaml 
+  173  cat ../dependencies.yaml
+  174  vi Chart.yaml 
+  175  helm dependency update
+  176  vi Chart.yaml 
+  177  cat ../dependencies.yaml >> Chart.yaml
+  178  helm dependency update
+  179  cat ../mariadb.yaml >> values.yaml
+  180  vi  templates/
+  181  vi  ./templates/deployment.yaml
+  182  cat ../env.yaml >> values.yaml
+  183  source /usr/local/etc/ocp4.config
+  184  oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+  185  helm install famousapp .
+  186  oc get deployments
+  187  vi  ./templates/deployment.yaml
+  188  helm install famousapp .
+  189  oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+  190  oc project
+  191  oc get projects
+  192  helm install famousapp .
+  193  oc new-project 
+  194  ${RHT_OCP4_DEV_USER}-multicontainer-helm
+  195  oc new-project ${RHT_OCP4_DEV_USER}-multicontainer-helm
+  196  helm install famousapp .
+  197  oc get deployments
+  198  oc get pods
+  199  oc expose service famousapp-famouschart
+  200  oc get pods
+  201  FAMOUS_URL=$(oc get route \
+  202  -n ${RHT_OCP4_DEV_USER}-multicontainer-helm famousapp-famouschart \
+  203  -o jsonpath='{.spec.host}'/random)
+  204  curl $FAMOUS_URL
+  205  cd ~
+  206  lab multicontainer-helm finish
+  207  lab multicontainer-kustomize start
+  208  cd ~/DO288/labs/multicontainer-kustomize
+  209  cat famous-quotes.yaml
+  210  mkdir famous-kustomize
+  211  cd famous-kustomize
+  212  mkdir base
+  213  cp ../famous-quotes.yaml base/deployment.yaml
+  214  vi  kustomization.yaml
+  215  oc new-project ${RHT_OCP4_DEV_USER}-multicontainer-kustomize
+  216  oc apply -k base
+  217  ls -ltrh
+  218  mv kustomization.yaml kustomization.yml
+  219  oc apply -k base
+  220  mv kustomization.yml base/
+  221  oc apply -k base
+  222  oc get deployments
+  223  oc expose service famousapp-famouschart
+  224  FAMOUS_URL=$(oc get route \
+  225  -n ${RHT_OCP4_DEV_USER}-multicontainer-kustomize famousapp-famouschart \
+  226  -o jsonpath='{.spec.host}'/random)
+  227  curl $FAMOUS_URL
+  228  mkdir -p overlays/dev
+  229  oc get deployments
+  230  oc get pod
+  231  cd overlays/dev/
+  232  vi replica_limits.yaml
+  233  cp /home/student/DO288/solutions/multicontainer-kustomize/famous-kustomize/overlays/dev/replica_limits.yaml .
+  234  vi replica_limits.yaml 
+  235  ls -ltrh
+  236  vi kustomization.yaml
+  237  cd ..
+  238  oc apply -k overlays/dev
+  239  curl $FAMOUS_URL
+  240  oc get deployments famousapp-famouschart -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'
+  241  cp -R overlays/dev overlays/stage
+  242  vi overlays/stage/replica_limits.yaml 
+  243  oc apply -k overlays/stage
+  244  oc get deployments famousapp-famouschart -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'
+  245   cp -R overlays/dev overlays/prod
+  246  vi overlays/prod/replica_limits.yaml 
+  247  oc apply -k overlays/prod
+  248  oc get deployments famousapp-famouschart -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'
+  249  cd
+  250  lab multicontainer-kustomize finish
+  251  lab probes start
+  252   oc new-project ${RHT_OCP4_DEV_USER}-probes
+  253  oc new-app --name probes --context-dir probes --build-env npm_config_registry=http://${RHT_OCP4_NEXUS_SERVER}/repository/nodejs nodejs:16-ubi8~https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps
+  254  oc get pods
+  255  oc get logs -f probes-1-build
+  256  oc get pods
+  257  oc logs -f probes-1-build
+  258  oc get pods
+  259  oc expose svc probes
+  260  curl -i probes-${RHT_OCP4_DEV_USER}-probes.${RHT_OCP4_WILDCARD_DOMAIN}/ready
+  261  curl probes-${RHT_OCP4_DEV_USER}-probes.${RHT_OCP4_WILDCARD_DOMAIN}
+  262  oc set probe deployment probes --liveness --get-url=http://:8080/healthz --initial-delay-seconds=2 --timeout-seconds=2
+  263  oc set probe deployment probes --readiness --get-url=http://:8080/ready --initial-delay-seconds=2 --timeout-seconds=2
+  264  oc describe deployment probes | grep -iA 1 liveness
+  265  oc get pods
+  266  POD=$(oc get pods -o name | grep -v build)
+  267  oc logs -f $POD
+  268  echo $POD
+  269  oc get pod
+  270  oc logs -f $POD
+  271  lab app-deploy start
+  272  cd DO288-apps
+  273  git status
+  274  git checkout main
+  275  git checkout -b app-deploy
+  276  cat ../token 
+  277  git push -u origin app-deploy
+  278  ls ~/DO288-apps/quip/src/main/java/com/redhat/training/example/Quip.java
+  279  cat /home/student/DO288-apps/quip/src/main/java/com/redhat/training/example/Quip.java
+  280  source /usr/local/etc/ocp4.config
+  281  oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+  282  oc new-project ${RHT_OCP4_DEV_USER}-app-deploy
+  283  ls -ltrh  /home/student/DO288/labs/app-deploy/oc-newapp.sh 
+  284  ls -ltrh  /home/student/DO288/labs/app-deploy/oc-new-app.sh 
+  285  cat /home/student/DO288/labs/app-deploy/oc-new-app.sh 
+  286  /home/student/DO288/labs/app-deploy/oc-new-app.sh 
+  287  oc get pods
+  288  oc logs -f bc/quip
+  289  oc get pods
+  290  oc describe svc/quip
+  291  oc expose svc quip
+  292  oc get routes
+  293  curl quip-developer-app-deploy.apps.ocp4.example.com
+  294  oc get pods
+  295  oc get dc
+  296  oc set probe dc/quip --liveness --readiness --get-url=http://:8080/ready --initial-delay-seconds=30 --timeout-seconds=2
+  297  oc get dc
+  298  oc get pods
+  299  oc describe dc/quip | grep http-get
+  300  oc describe pod quip-2-tj22k | grep http-get
+  301  curl quip-developer-app-deploy.apps.ocp4.example.com
+  302  ls ~/DO288/labs/app-deploy/app-change.sh
+  303  ~/DO288/labs/app-deploy/app-change.sh
+  304  oc get pods
+  305  oc start-build quip -F
+  306  curl quip-developer-app-deploy.apps.ocp4.example.com
+  307  oc rollback dc/quip
+  308  curl quip-developer-app-deploy.apps.ocp4.example.com
+  309  oc delete project ${RHT_OCP4_DEV_USER}-app-deploy
+  310  lab app-deploy finish
+  311  history
+
